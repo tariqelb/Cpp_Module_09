@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 00:01:55 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/19 01:12:40 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/20 01:08:25 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,11 +244,78 @@ int	ValidDate(std::string date)
 }
 
 
+int ValidFloatNumber(std::string nbr, std::string line)
+{
+	int i;
+	int size;
+	int decimal;
+	int notadigit;
+
+	i = 0;
+	decimal = 0;
+	notadigit = 0;
+	size = nbr.size();
+	if (nbr[0] == '.')
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return (0);
+	}
+	while (i < size)
+	{
+		if (nbr[i] == '.')
+			decimal++;
+		else if (isdigit(nbr[i]) == 0)
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+			return (0);
+		}
+		i++;
+	}
+	if (decimal > 1)
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return (0);
+	}
+	i = 0;
+	while (i < size && nbr[i] != '.')
+		i++;
+	if (i > 3)
+	{
+		std::cerr << "Error: too large a number." << std::endl;
+		return (0);
+	}
+	return (1);
+}
+
+int	ValidValue(std::string value, std::string line)
+{
+	int		i;
+	float	val;
+	
+	i = 0;
+	if (ValidFloatNumber(value, line))
+	{
+		try 
+		{
+			val = std::stof(value);
+		}
+		catch (const std::invalid_argument& ex)
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+			return (0);
+		}
+		return (1);
+	}
+	return (0);
+
+}
+
 void	BitcoinExchange::ValueOfBitcoin(void)
 {
 	std::cout << "ValueOfBitcoin member function called" << std::endl;
-	int i;
-	int size;
+	int		i;
+	int		size;
+	float	val;
 
 	i = 0;
 	size = this->date.size();
@@ -257,13 +324,18 @@ void	BitcoinExchange::ValueOfBitcoin(void)
 		if (ValidDate(this->date[i]))
 		{
 			if (this->delemiter[i] == "Unvalid")
-				std::cerr << "Error: bad Format => " << this->line[i] << std::endl; 
+				std::cerr << "Error: bad input => " << this->line[i] << std::endl; 
 			else
 			{
-				//if (ValidValue(this->value[i]))
-				//{
-					;
-				//}
+				if (this->value[i] == "Unvalid")
+					std::cerr << "Error: bad input => " << line[i] << std::endl; 
+				else if (this->value[i][0] == '-')
+					std::cerr << "Error: not a positive number." << std::endl; 
+				else if (ValidValue(this->value[i], this->line[i]))
+				{
+					val = std::stof(this->value[i]) / X;
+					std::cout << this->date[i] << " => " << this->value[i] << " = " << val << std::endl;
+				}
 			}
 		}
 		else
