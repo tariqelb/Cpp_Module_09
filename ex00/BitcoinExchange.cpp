@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 00:01:55 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/20 01:08:25 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/22 00:13:00 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,15 @@ void	BitcoinExchange::FillData(std::ifstream& file)
 			while (i + j < size && line[i + j] != ' ')
 				j++;
 			if (j)
-				this->value.push_back(line.substr(i, j));
+			{
+				int k = j;
+				while (i + j < size && line[i + j] == ' ')
+					j++;
+				if (i + j == size)
+					this->value.push_back(line.substr(i, k));
+				else
+					this->value.push_back(line.substr(i, size));
+			}
 			else
 				this->value.push_back("Unvalid");
 		}	
@@ -333,7 +341,7 @@ void	BitcoinExchange::ValueOfBitcoin(void)
 					std::cerr << "Error: not a positive number." << std::endl; 
 				else if (ValidValue(this->value[i], this->line[i]))
 				{
-					val = std::stof(this->value[i]) / X;
+					val = round(std::stof(this->value[i]) / X);
 					std::cout << this->date[i] << " => " << this->value[i] << " = " << val << std::endl;
 				}
 			}
