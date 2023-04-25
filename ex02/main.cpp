@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RPN.hpp                                            :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/21 23:28:50 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/24 02:39:05 by tel-bouh         ###   ########.fr       */
+/*   Created: 2023/04/25 10:30:31 by tel-bouh          #+#    #+#             */
+/*   Updated: 2023/04/25 14:48:57 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RPN_HPP
-# define RPN_HPP
+#include "PmergeMe.hpp"
 
-#include <iostream>
-#include <list>
-#include <cctype>
-//#include <>
-
-class	Rpn
+int	main(int ac, char **av)
 {
-	private:
-		std::list<std::string>	expr;
+	PmergeMe	number;
 
-	public:
-		Rpn();
-		Rpn(Rpn& rhs);
-		Rpn&	operator=(Rpn& rhs);
-		~Rpn();
-
-		std::list<std::string>	GetExpr(void);
-		void					FillExpr(char *arg);
-		int						CheckForErrors(void);
-		void					DisplayResult(void);
-};
-
-#endif
+	if (ac < 2)
+	{
+		std::cerr << "Error" << std::endl;
+		return (1);
+	}
+	if (number.CheckForErrors(ac, av))
+	{
+		std::cerr << "Error" << std::endl;
+		return (1);
+	}
+	number.FillContainers(ac, av);
+	number.DisplaySortedResult();
+	return (0);
+}

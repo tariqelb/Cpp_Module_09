@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 00:23:40 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/22 01:01:01 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/24 00:59:29 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	expr.FillExpr(av[1]);
+	if (expr.CheckForErrors())
+		return (1);
 	expr.DisplayResult();
 	return (0);
 }
