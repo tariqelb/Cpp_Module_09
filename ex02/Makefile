@@ -6,13 +6,13 @@
 #    By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/25 03:05:15 by tel-bouh          #+#    #+#              #
-#    Updated: 2023/04/25 10:30:20 by tel-bouh         ###   ########.fr        #
+#    Updated: 2023/04/26 20:01:31 by tel-bouh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = PmergeMe
 
-SRCS =  ./main.cpp ./PmergeMe.cpp
+SRCS =  ./main.cpp ./PmergeMe.cpp ./SortVector.cpp ./SortDeque.cpp
 
 FLAGS = -Werror -Wextra -Wall -std=c++98
 

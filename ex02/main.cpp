@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 10:30:31 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 09:50:40 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:12:12 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	number.SortAndDisplayResult();
+	//number.IsVectorSorted();
+	//number.IsDequeSorted();
 	return (0);
 }

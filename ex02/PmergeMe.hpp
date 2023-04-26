@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 10:17:04 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 10:07:32 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:08:23 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <ctime>
-
+#include <sys/time.h>
 class PmergeMe
 {
 	private:
@@ -35,7 +34,11 @@ class PmergeMe
 		std::deque<unsigned int>&		GetDequeNumbers(void);
 		int								FillAndCheckForErrors(int ac, char **av);
 		void							SortAndDisplayResult(void);
-
+		void							IsVectorSorted(void);
+		void							IsDequeSorted(void);
 };
+
+void    SortVector(std::vector<unsigned int>& vec);
+void    SortDeque(std::deque<unsigned int>& deq);
 
 #endif
