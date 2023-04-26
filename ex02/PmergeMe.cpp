@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 20:28:25 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:32:50 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ int	PmergeMe::FillAndCheckForErrors(int ac, char **av)
 	while (i < ac)
 	{
 		j = 0;
-<<<<<<< HEAD
 		arg.assign(av[i]);
 		size = arg.size();
 		while (j < size)
