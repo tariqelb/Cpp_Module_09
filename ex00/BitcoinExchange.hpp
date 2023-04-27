@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 23:43:20 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 15:49:49 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:29:42 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ class BitcoinExchange
 
 	public:
 		BitcoinExchange();
-		BitcoinExchange(BitcoinExchange& rhs);
-		BitcoinExchange&	operator=(BitcoinExchange& rhs);
+		BitcoinExchange(const BitcoinExchange& rhs);
+		BitcoinExchange&	operator=(const BitcoinExchange& rhs);
 		~BitcoinExchange();
 
-		std::queue<std::string>	GetDate(void);
-		std::queue<std::string>	GetDelemiter(void);
-		std::queue<std::string>	GetValue(void);
-		std::queue<std::string>	GetLine(void);
+		std::queue<std::string>	GetDate(void) const;
+		std::queue<std::string>	GetDelemiter(void) const;
+		std::queue<std::string>	GetValue(void) const;
+		std::queue<std::string>	GetLine(void) const;
 		void					FillData(std::ifstream& file);
 		void					ValueOfBitcoin(void);
 };

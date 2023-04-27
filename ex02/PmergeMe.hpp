@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 10:17:04 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 20:30:08 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:17:44 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ class PmergeMe
 
 	public:
 		PmergeMe();
-		PmergeMe(PmergeMe& rhs);
-		PmergeMe&	operator=(PmergeMe& rhs);
+		PmergeMe(const PmergeMe& rhs);
+		PmergeMe&	operator=(const PmergeMe& rhs);
 		~PmergeMe();
 
-		std::vector<unsigned int>&		GetVectorNumbers(void);
-		std::deque<unsigned int>&		GetDequeNumbers(void);
+		const std::vector<unsigned int>&		GetVectorNumbers(void) const;
+		const std::deque<unsigned int>&		GetDequeNumbers(void) const;
 		int								FillAndCheckForErrors(int ac, char **av);
 		void							SortAndDisplayResult(void);
 		void							IsVectorSorted(void);

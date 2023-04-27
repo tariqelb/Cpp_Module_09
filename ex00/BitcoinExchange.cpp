@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:40:51 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 15:50:16 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:29:37 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ BitcoinExchange::BitcoinExchange()
 {
 }
 
-BitcoinExchange::BitcoinExchange(BitcoinExchange& rhs)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& rhs)
 {
 	*this = rhs;
 }
 
-BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
+BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& rhs)
 {
 	int						i;
 	int						size;
@@ -71,6 +71,7 @@ BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
 			temp_date.pop();
 			i++;
 		}
+		temp_delemiter = rhs.GetDelemiter();
 		i = 0;
 		size = temp_delemiter.size();
 		while (i < size)
@@ -79,6 +80,7 @@ BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
 			temp_delemiter.pop();
 			i++;
 		}
+		temp_value = rhs.GetValue();
 		i = 0;
 		size = temp_value.size();
 		while (i < size)
@@ -87,6 +89,7 @@ BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
 			temp_value.pop();
 			i++;
 		}
+		temp_line = rhs.GetLine();
 		i = 0;
 		size = temp_line.size();
 		while (i < size)
@@ -103,22 +106,22 @@ BitcoinExchange::~BitcoinExchange()
 {
 }
 
-std::queue<std::string>	BitcoinExchange::GetDate(void)
+std::queue<std::string>	BitcoinExchange::GetDate(void) const
 {
 	return (this->date);
 }
 
-std::queue<std::string>	BitcoinExchange::GetDelemiter(void)
+std::queue<std::string>	BitcoinExchange::GetDelemiter(void) const
 {
 	return (this->delemiter);
 }
 
-std::queue<std::string>	BitcoinExchange::GetValue(void)
+std::queue<std::string>	BitcoinExchange::GetValue(void) const
 {
 	return (this->value);
 }
 
-std::queue<std::string>	BitcoinExchange::GetLine(void)
+std::queue<std::string>	BitcoinExchange::GetLine(void) const
 {
 	return (this->line);
 }

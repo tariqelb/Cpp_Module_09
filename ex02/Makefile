@@ -6,7 +6,7 @@
 #    By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/25 03:05:15 by tel-bouh          #+#    #+#              #
-#    Updated: 2023/04/26 20:23:15 by tel-bouh         ###   ########.fr        #
+#    Updated: 2023/04/27 19:13:53 by tel-bouh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ $(NAME) :
 clean:
 	rm -rf $(OBJS)
 
-fclean:
+fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all

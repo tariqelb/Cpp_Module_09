@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 20:32:50 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:17:59 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ PmergeMe::PmergeMe()
 {
 }
 
-PmergeMe::PmergeMe(PmergeMe& rhs)
+PmergeMe::PmergeMe(const PmergeMe& rhs)
 {
 	*this = rhs;
 }
 
-PmergeMe&	PmergeMe::operator=(PmergeMe& rhs)
+PmergeMe&	PmergeMe::operator=(const PmergeMe& rhs)
 {
 	int 						i;
 	int 						size;
@@ -66,12 +66,12 @@ PmergeMe::~PmergeMe()
 {
 }
 
-std::vector<unsigned int>&	PmergeMe::GetVectorNumbers(void)
+const std::vector<unsigned int>&	PmergeMe::GetVectorNumbers(void) const
 {
 	return (this->vec_nbr);
 }
 
-std::deque<unsigned int>&	PmergeMe::GetDequeNumbers(void)
+const std::deque<unsigned int>&	PmergeMe::GetDequeNumbers(void) const
 {
 	return (this->deq_nbr);
 }

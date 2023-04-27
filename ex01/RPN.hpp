@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:28:50 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/24 02:39:05 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:19:39 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ class	Rpn
 
 	public:
 		Rpn();
-		Rpn(Rpn& rhs);
-		Rpn&	operator=(Rpn& rhs);
+		Rpn(const Rpn& rhs);
+		Rpn&	operator=(const Rpn& rhs);
 		~Rpn();
 
-		std::list<std::string>	GetExpr(void);
+		std::list<std::string>	GetExpr(void) const;
 		void					FillExpr(char *arg);
 		int						CheckForErrors(void);
 		void					DisplayResult(void);
