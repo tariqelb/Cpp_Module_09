@@ -1,0 +1,4 @@
+#ignore
+ex00/*.o
+*/*.out
+ex00/*.swp

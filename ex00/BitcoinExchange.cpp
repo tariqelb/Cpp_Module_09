@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/17 00:01:55 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/22 00:13:00 by tel-bouh         ###   ########.fr       */
+/*   Created: 2023/04/27 11:40:51 by tel-bouh          #+#    #+#             */
+/*   Updated: 2023/04/27 15:16:13 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,85 @@
 
 BitcoinExchange::BitcoinExchange()
 {
-	std::cout << "Default constructer called" << std::endl;
 }
 
 BitcoinExchange::BitcoinExchange(BitcoinExchange& rhs)
 {
-	std::cout << "Copy constructer called" << std::endl;
 	*this = rhs;
 }
 
 BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
 {
-	std::cout << "Copy assignment called" << std::endl;
-	int	i;
-	int	size;
+	int						i;
+	int						size;
+	std::queue<std::string>	temp_date;
+	std::queue<std::string>	temp_delemiter;
+	std::queue<std::string>	temp_value;
+	std::queue<std::string>	temp_line;
 
 	if (this != &rhs)
 	{
-		//copy data inside data member variable
+		//free up the object if is not empty
 		i = 0;
 		size = this->date.size();
 		while (i < size)
 		{
-			this->date[i] = rhs.date[i];
+			this->date.pop();
 			i++;
 		}
-		//copy data inside delemiter member variable
 		i = 0;
 		size = this->delemiter.size();
 		while (i < size)
 		{
-			this->delemiter[i] = rhs.delemiter[i];
+			this->delemiter.pop();
 			i++;
 		}
-		//copy data inside value member variable
 		i = 0;
 		size = this->value.size();
 		while (i < size)
 		{
-			this->value[i] = rhs.value[i];
+			this->value.pop();
 			i++;
 		}
 		i = 0;
 		size = this->line.size();
 		while (i < size)
 		{
-			this->line[i] = rhs.line[i];
+			this->line.pop();
+			i++;
+		}
+		temp_date = rhs.GetDate();
+		// Copy data to the object
+		i = 0;
+		size = temp_date.size();
+		while (i < size)
+		{
+			this->date.push(temp_date.front());
+			temp_date.pop();
+			i++;
+		}
+		i = 0;
+		size = temp_delemiter.size();
+		while (i < size)
+		{
+			this->delemiter.push(temp_delemiter.front());
+			temp_delemiter.pop();
+			i++;
+		}
+		i = 0;
+		size = temp_value.size();
+		while (i < size)
+		{
+			this->value.push(temp_value.front());
+			temp_value.pop();
+			i++;
+		}
+		i = 0;
+		size = temp_line.size();
+		while (i < size)
+		{
+			this->line.push(temp_line.front());
+			temp_line.pop();
 			i++;
 		}
 	}
@@ -68,131 +101,107 @@ BitcoinExchange&	BitcoinExchange::operator=(BitcoinExchange& rhs)
 
 BitcoinExchange::~BitcoinExchange()
 {
-	std::cout << "Default destructer called" << std::endl;
 }
 
-std::string	BitcoinExchange::GetDate(unsigned int index)
+std::queue<std::string>	BitcoinExchange::GetDate(void)
 {
-	std::string empty;
-
-	if (index < this->date.size())
-	{
-		return (this->date[index]);
-	}
-	return (empty);
+	return (this->date);
 }
 
-std::string	BitcoinExchange::GetDelemiter(unsigned int index)
+std::queue<std::string>	BitcoinExchange::GetDelemiter(void)
 {
-	std::string empty;
-
-	if (index < this->delemiter.size())
-	{
-		return (this->delemiter[index]);
-	}
-	return (empty);
+	return (this->delemiter);
 }
 
-std::string	BitcoinExchange::GetValue(unsigned int index)
+std::queue<std::string>	BitcoinExchange::GetValue(void)
 {
-	std::string empty;
-
-	if (index < this->value.size())
-	{
-		return (this->value[index]);
-	}
-	return (empty);
+	return (this->value);
 }
 
-void	SkipWhiteSpace(std::string line, int& i)
+std::queue<std::string>	BitcoinExchange::GetLine(void)
 {
-	int	size;
-
-	size = line.size();
-	while (i < size && line[i] == ' ')
-		i++;
+	return (this->line);
 }
-
 
 void	BitcoinExchange::FillData(std::ifstream& file)
 {
-	std::string line;
+	std::string rd_line;
 	int			i;
 	int			j;
 	int			size;
 	std::string	del;
 
 	del.assign(",\t;|:");
-	std::cout << "FillData member function called" << std::endl;
-	getline(file, line);
+	getline(file, rd_line);
 	i = 0;
-	if (line.find("date") >= 0)
+	if (rd_line.find("date") >= 0)
 	{
-		std::string	del;
-		i = line.find("date") + 4;
-		size = line.size();
-		while (i < size && line[i] == ' ')
+		i = rd_line.find("date") + 4;
+		size = rd_line.size();
+		while (i < size && rd_line[i] == ' ')
 			i++;
 		if (i == size)
 		{
-			std::cerr << "Error: invalide CSV format." << std::endl;
+			std::cerr << "Error: invalid CSV format." << std::endl;
 			return ;
 		}
-		if (del.find(line[i]) >= 0)
-			del.assign(1, line[i]);
+		if (del.find(rd_line[i]) >= 0)
+			del.assign(1, rd_line[i]);
 		else
 		{
-			std::cerr << "Error: invalide CSV format." << std::endl;
+			std::cerr << "Error: invalid CSV format." << std::endl;
 			return ;
 		}
 	}
 	else
 	{
-		std::cerr << "Error: invalide CSV format." << std::endl;
+		std::cerr << "Error: messing CSV format." << std::endl;
 		return ;
 	}
-	while (getline(file, line))
+	while (getline(file, rd_line))
 	{
-		if (line.size())
+		if (rd_line.size())
 		{
-			this->line.push_back(line);
+			this->line.push(rd_line);
 			i = 0;
-			size = line.size();
-			SkipWhiteSpace(line, i);
+			size = rd_line.size();
+			while (i < size && rd_line[i] == ' ')
+				i++;
 			j = 0;
-			while (i + j < size && line[i + j] != del[0] && line[i + j] != ' ')
+			while (i + j < size && rd_line[i + j] != del[0] && rd_line[i + j] != ' ')
 				j++;
 			if (j)
-				this->date.push_back(line.substr(i, j));
+				this->date.push(rd_line.substr(i, j));
 			else
-				this->date.push_back("Unvalid");
+				this->date.push("Invalid");
 			i = i + j;
-			SkipWhiteSpace(line, i);
-			if (i < size && line[i] == del[0])
-				this->delemiter.push_back(line.substr(i, 1));
+			while (i < size && rd_line[i] == ' ')
+				i++;
+			if (i < size && rd_line[i] == del[0])
+				this->delemiter.push(rd_line.substr(i, 1));
 			else
-				this->delemiter.push_back("Unvalid");
+				this->delemiter.push("Invalid");
 			i++;
-			SkipWhiteSpace(line, i);
+			while (i < size && rd_line[i] == ' ')
+				i++;
 			j = 0;
-			while (i + j < size && line[i + j] != ' ')
+			while (i + j < size && rd_line[i + j] != ' ')
 				j++;
 			if (j)
 			{
 				int k = j;
-				while (i + j < size && line[i + j] == ' ')
+				while (i + j < size && rd_line[i + j] == ' ')
 					j++;
 				if (i + j == size)
-					this->value.push_back(line.substr(i, k));
+					this->value.push(rd_line.substr(i, k));
 				else
-					this->value.push_back(line.substr(i, size));
+					this->value.push(rd_line.substr(i, size));
 			}
 			else
-				this->value.push_back("Unvalid");
-		}	
+				this->value.push("Invalid");
+		}
 	}
 }
-
 
 int	ValidDate(std::string date)
 {
@@ -202,6 +211,7 @@ int	ValidDate(std::string date)
 	int year;
 	int month;
 	int	day;
+	int	val;
 
 	i = 0;
 	size = date.size();
@@ -211,7 +221,13 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i] != '-')
 		return (0);
-	year = atoi((date.substr(0, i)).c_str());
+	try {
+		val = std::stoi((date.substr(0, i)));  
+	}
+	catch (std::invalid_argument& e) {
+		return (0);
+	}
+	year = std::stoi((date.substr(0, i)).c_str());
 	if (year < 1)
 		return (0);
 	i++;
@@ -222,7 +238,13 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i + j] != '-')
 		return (0);
-	month = atoi(date.substr(i, 2).c_str());
+	try {
+		val = std::stoi((date.substr(i, 2)));  
+	}
+	catch (std::invalid_argument& e) {
+		return (0);
+	}
+	month = std::stoi(date.substr(i, 2));
 	if (month < 1 || month > 12)
 		return (0);
 	i = i + 3;
@@ -233,7 +255,13 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i + j] != '\0')
 		return (0);
-	day = atoi(date.substr(i, 2).c_str());
+	try {
+		val = std::stoi((date.substr(i, 2)));  
+	}
+	catch (std::invalid_argument& e) {
+		return (0);
+	}
+	day = std::stoi(date.substr(i, 2));
 	if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
 	{
 		if (day < 1 || day > 31)
@@ -243,7 +271,6 @@ int	ValidDate(std::string date)
 	{
 		if (day < 1 || day > 30)
 			return (0);
-
 	}
 	if (month == 2)
 		if (day < 0 || day > 28)
@@ -299,15 +326,20 @@ int	ValidValue(std::string value, std::string line)
 {
 	int		i;
 	float	val;
-	
+
 	i = 0;
 	if (ValidFloatNumber(value, line))
 	{
-		try 
+		try
 		{
 			val = std::stof(value);
 		}
 		catch (const std::invalid_argument& ex)
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+			return (0);
+		}
+		catch (const std::out_of_range& ex)
 		{
 			std::cerr << "Error: bad input => " << line << std::endl;
 			return (0);
@@ -320,7 +352,6 @@ int	ValidValue(std::string value, std::string line)
 
 void	BitcoinExchange::ValueOfBitcoin(void)
 {
-	std::cout << "ValueOfBitcoin member function called" << std::endl;
 	int		i;
 	int		size;
 	float	val;
@@ -329,28 +360,39 @@ void	BitcoinExchange::ValueOfBitcoin(void)
 	size = this->date.size();
 	while (i < size)
 	{
-		if (ValidDate(this->date[i]))
+		if (ValidDate(this->date.front()))
 		{
-			if (this->delemiter[i] == "Unvalid")
-				std::cerr << "Error: bad input => " << this->line[i] << std::endl; 
+			if (this->delemiter.front() == "Unvalid")
+				std::cerr << "Error: bad input => " << this->line.front() << std::endl;
 			else
 			{
-				if (this->value[i] == "Unvalid")
-					std::cerr << "Error: bad input => " << line[i] << std::endl; 
-				else if (this->value[i][0] == '-')
-					std::cerr << "Error: not a positive number." << std::endl; 
-				else if (ValidValue(this->value[i], this->line[i]))
+				if (this->value.front() == "Unvalid")
+					std::cerr << "Error: bad input => " << this->line.front() << std::endl;
+				else if ((this->value.front())[0] == '-')
+					std::cerr << "Error: not a positive number." << std::endl;
+				else if (ValidValue(this->value.front(), this->line.front()))
 				{
-					val = round(std::stof(this->value[i]) / X);
-					std::cout << this->date[i] << " => " << this->value[i] << " = " << val << std::endl;
+					val = round(std::stof(this->value.front()) / X);
+					std::cout << this->date.front() << " => " << this->value.front() << " = " << val << std::endl;
 				}
 			}
 		}
 		else
 		{
-			std::cerr << "Error: bad input => " << this->line[i] << std::endl;
+			std::cerr << "Error: bad input => " << this->line.front() << std::endl;
 		}
+		this->date.push(this->date.front());
+		this->date.pop();
+		this->delemiter.push(this->delemiter.front());
+		this->delemiter.pop();
+		this->value.push(this->value.front());
+		this->value.pop();
+		this->line.push(this->line.front());
+		this->line.pop();
 		i++;
 	}
 }
-		//std::cout << "Data : [" << this->date[i] << "][" << this->delemiter[i] << "][" << this->value[i] << "]" << std::endl;
+
+
+
+
