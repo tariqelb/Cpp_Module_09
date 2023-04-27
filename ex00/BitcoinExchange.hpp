@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 23:43:20 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 15:28:00 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:49:49 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fstream>
 # include <cmath>
 # define X 3.33
+
 
 class BitcoinExchange
 {
