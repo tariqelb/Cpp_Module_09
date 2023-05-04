@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 19:17:59 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:27:09 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ int	PmergeMe::FillAndCheckForErrors(int ac, char **av)
 	int			j;
 	int			k;
 	int			size;
-	int			nbr;
 	std::string	arg;
 	std::string	val;
 	

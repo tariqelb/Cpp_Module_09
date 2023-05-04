@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 19:57:09 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 20:10:12 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:29:49 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	DequeMergeSort(std::deque<unsigned int>& deq, std::deque<unsigned int> *tmp
 {
 	int i;
 	int j;
-	int	size;
 
 	while (div > 1)
 	{
@@ -115,9 +114,9 @@ void	SortDeque(std::deque<unsigned int>& deq)
 	int size;
 	int	chunks;
 
+	size = deq.size();
 	if (size == 1)
 		return;
-	size = deq.size();
 	if (size < 10)
 		div = 2;
 	else if (size < 100)

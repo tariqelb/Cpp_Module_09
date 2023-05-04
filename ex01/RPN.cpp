@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:47:19 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 19:22:58 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:20:21 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,36 @@ Rpn&	Rpn::operator=(const Rpn& rhs)
 	int						i;
 	int						size;
 	std::string 			val;
-	std::list<std::string>	tmp_expr;
+	std::stack<std::string>	tmp_expr;
+	std::stack<std::string>	tmp2_expr;
 
 	if (this != &rhs)
 	{
+		size = this->expr.size();
+		i = 0;
+		while (i < size)
+		{
+			this->expr.pop();
+			i++;
+		}
 		tmp_expr = rhs.GetExpr();
 		size = tmp_expr.size();
-		if (size)
+		i = 0;
+		while (i < size)
 		{
-			i = 0;
-			while (i < size)
-			{
-				val.assign(tmp_expr.front());
-				this->expr.push_back(val);
-				tmp_expr.pop_front();
-				i++;
-			}
+			val.assign(tmp_expr.top());
+			tmp2_expr.push(val);
+			tmp_expr.pop();
+			i++;
+		}
+		size = tmp2_expr.size();
+		i = 0;
+		while (i < size)
+		{
+			val.assign(tmp2_expr.top());
+			this->expr.push(val);
+			tmp2_expr.pop();
+			i++;
 		}
 	}
 	return (*this);
@@ -49,6 +63,11 @@ Rpn&	Rpn::operator=(const Rpn& rhs)
 
 Rpn::~Rpn()
 {
+}
+
+std::stack<std::string>	Rpn::GetExpr(void) const
+{
+	return (this->expr);
 }
 
 void	Rpn::FillExpr(char	*arg)
@@ -74,7 +93,7 @@ void	Rpn::FillExpr(char	*arg)
 		if (j)
 		{
 			val = expr.substr(i, j);
-			this->expr.push_back(val);
+			this->expr.push(val);
 		}
 		i = i + j;
 	}
@@ -118,37 +137,28 @@ int	Rpn::CheckForErrors(void)
 {
 	int						i;
 	int						size;
-	std::list<std::string>	tmp_expr;
+	std::stack<std::string>	tmp_expr;
 
 	i = 0;
 	tmp_expr = GetExpr();
 	size = tmp_expr.size();
 	if (size < 3 || size % 2 == 0)
 	{
-		std::cerr << "Error: unvalid number of arguments" << std::endl;
+		std::cerr << "Error" << std::endl;
 		return (1);
 	}
 	i = 0;
 	while (i < size)
 	{
-		if (i == 0 || i == 1 || (i % 2))
+		std::string val;
+
+		val = tmp_expr.top();
+		if (ValidDigit(val) && ValidOperator(val))
 		{
-			if (ValidDigit(tmp_expr.front()))
-			{
-				std::cerr << "Error: invalid number." << std::endl;
-				return (1);
-			}
-			tmp_expr.pop_front();
+			std::cerr << "Error" << std::endl;
+			return (1);
 		}
-		else
-		{
-			if (ValidOperator(tmp_expr.front()))
-			{
-				std::cerr << "Error: invalid operator." << std::endl;
-				return (1);
-			}
-			tmp_expr.pop_front();
-		}
+		tmp_expr.pop();
 		i++;
 	}
 	return (0);
@@ -160,7 +170,6 @@ int	toInt(std::string nbr)
 	int rst;
 	int size;
 	int	sign;
-
 	
 	i = 0;
 	rst = 0;
@@ -181,53 +190,85 @@ int	toInt(std::string nbr)
 	return (rst * sign);
 }
 
+
+void		FlipStack(std::stack<std::string>& flip_stack, std::stack<std::string> tmp_stack)
+{
+	while (tmp_stack.size())
+	{
+		flip_stack.push(tmp_stack.top());
+		tmp_stack.pop();
+	}
+}
+
+void	Operation(std::stack<int>& stack, std::string opr)
+{
+	int	nbr1;
+	int nbr2;
+	int rst;
+	int size;
+
+	size = stack.size();
+	if (size < 2)
+	{
+		std::cerr << "Error" << std::endl;
+		exit(1);
+	}
+	nbr2 = stack.top();
+	stack.pop();
+	nbr1 = stack.top();
+	stack.pop();
+	if (opr == "+")
+		rst = nbr1 + nbr2;
+	if (opr == "-")
+		rst = nbr1 - nbr2;
+	if (opr == "*")
+		rst = nbr1 * nbr2;
+	if (opr == "/")
+	{
+		if (nbr2 == 0)
+		{
+			std::cerr << "Error" << std::endl;
+			exit(1);
+		}	
+		rst = nbr1 / nbr2;
+	}
+	//std::cout << "Rst :" << nbr1 << " " << nbr2 << " " << opr << " " << rst << std::endl;
+	stack.push(rst);
+}
+
 void	Rpn::DisplayResult(void)
 {
-	int 					i;
+	int 					nbr;
+	int 					opr;
 	int 					size;
-	int						val;
-	int						rst;
-	std::list<std::string> tmp_expr;
-	std::list<std::string> nbr;
-	std::list<std::string> opr;
+	std::string				data;
+	std::stack<std::string> rev_stack;
+	std::stack<int>			tmp_stack;
 
-	tmp_expr = GetExpr();
-	size = tmp_expr.size();
-	i = 0;
-	while (i < size)
+	FlipStack(rev_stack, this->GetExpr());
+	size = rev_stack.size();
+	nbr = 0;
+	opr = 0;
+	while (size)
 	{
-		if (i == 0 || i == 1 || (i % 2))
-			nbr.push_back(tmp_expr.front());
+		data = rev_stack.top();
+		if (ValidOperator(data))
+		{
+			tmp_stack.push(toInt(data));
+			nbr++;
+		}
 		else
-			opr.push_back(tmp_expr.front());
-		tmp_expr.pop_front();
-		i++;
+		{
+			Operation(tmp_stack, data);
+			nbr--;
+		}
+		rev_stack.pop();
+		size--;
 	}
-	rst = toInt(nbr.front());
-	nbr.pop_front();
-	size = opr.size();
-	i = 0;
-	while (i < size)
+	if (tmp_stack.size() != 1)
 	{
-		val = toInt(nbr.front());
-		nbr.pop_front();
-		if (opr.front() == "-")
-			rst = rst - val;
-		else if (opr.front() == "+")
-			rst = rst + val;
-		else if (opr.front() == "*")
-			rst = rst * val;
-		else if (opr.front() == "/")
-			rst = rst / val;
-		opr.pop_front();
-		i++;
+		std::cerr << "Error :  " << tmp_stack.size() << std::endl;
+		return;
 	}
-	
-	std::cout << rst << std::endl;
+	std::cout << tmp_stack.top() << std::endl;
 }
-
-std::list<std::string>	Rpn::GetExpr(void) const
-{
-	return (this->expr);
-}
-

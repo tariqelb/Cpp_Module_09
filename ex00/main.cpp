@@ -6,18 +6,18 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 23:39:50 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/17 00:42:17 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:16:31 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-#include <fstream>
 
 int	main(int ac, char **av)
 {
 	BitcoinExchange bitcoin;
-
-	std::ifstream file;
+	std::ifstream data_file;
+	std::ifstream input_file;
+	
 	if (ac == 1)
 	{
 		std::cerr << "Error: could not open file." << std::endl;
@@ -28,14 +28,22 @@ int	main(int ac, char **av)
 		std::cerr << "Error: too many arguments." << std::endl;
 		return (-1);
 	}
-	file.open(av[1]);
-	if (file.is_open() == 0)
+	input_file.open(av[1]);
+	if (input_file.is_open() == 0)
 	{
 		std::cerr << "Error : Fail to open file : " << av[1] << "." <<std::endl;
 		return (-1);
 	}
-	bitcoin.FillData(file);
-	bitcoin.ValueOfBitcoin();
-	file.close();
+	data_file.open("./data.csv");
+	if (data_file.is_open() == 0)
+	{
+		std::cerr << "Error : Fail to open file : data.csv" <<std::endl;
+		input_file.close();
+		return (-1);
+	}
+	bitcoin.GetDatabase(data_file);
+	bitcoin.Display(input_file);
+	input_file.close();
+	data_file.close();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 19:55:32 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/26 20:10:28 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:29:57 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	VectorMergeSort(std::vector<unsigned int>& vec, std::vector<unsigned int> *
 {
 	int i;
 	int j;
-	int	size;
 
 	while (div > 1)
 	{
@@ -115,9 +114,9 @@ void	SortVector(std::vector<unsigned int>& vec)
 	int size;
 	int	chunks;
 
+	size = vec.size();
 	if (size == 1)
 		return;
-	size = vec.size();
 	if (size < 10)
 		div = 2;
 	else if (size < 100)

@@ -6,13 +6,13 @@
 #    By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/17 00:26:22 by tel-bouh          #+#    #+#              #
-#    Updated: 2023/04/17 00:31:37 by tel-bouh         ###   ########.fr        #
+#    Updated: 2023/05/04 19:31:22 by tel-bouh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = btc
 
-SRCS = ./main.cpp ./BitcoinExchange.cpp
+SRCS = ./main.cpp ./BitcoinExchange.cpp ./Tool.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

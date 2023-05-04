@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 23:43:20 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/04/27 19:29:42 by tel-bouh         ###   ########.fr       */
+/*   Created: 2023/05/03 11:40:59 by tel-bouh          #+#    #+#             */
+/*   Updated: 2023/05/04 18:29:02 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,14 @@
 # define BITCOINEXCHANGE_HPP
 
 # include <iostream>
-# include <queue>
+# include <map>
 # include <string>
 # include <fstream>
-# include <cmath>
-# define X 3.33
-
 
 class BitcoinExchange
 {
-	private :
-		std::queue<std::string>	date;
-		std::queue<std::string>	delemiter;
-		std::queue<std::string>	value;
-		std::queue<std::string>	line;
+	private:
+		std::map<std::string, float >	data;
 
 	public:
 		BitcoinExchange();
@@ -35,12 +29,11 @@ class BitcoinExchange
 		BitcoinExchange&	operator=(const BitcoinExchange& rhs);
 		~BitcoinExchange();
 
-		std::queue<std::string>	GetDate(void) const;
-		std::queue<std::string>	GetDelemiter(void) const;
-		std::queue<std::string>	GetValue(void) const;
-		std::queue<std::string>	GetLine(void) const;
-		void					FillData(std::ifstream& file);
-		void					ValueOfBitcoin(void);
+		const std::map<std::string, float>	GetData(void) const ;
+		int									GetDatabase(std::ifstream& file);
+		void								Display(std::ifstream& file);
 };
+
+std::pair<std::string, float>       CheckForErrors(std::string line);
 
 #endif
