@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:03:56 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:32:05 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:24:24 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,49 @@ BitcoinExchange::~BitcoinExchange()
 const std::map<std::string, float>	BitcoinExchange::GetData(void) const
 {
 	return (this->data);
+}
+
+int		BitcoinExchange::IsEmptyFiles(char *database, char *input)
+{
+	std::ifstream	data_file;
+	std::ifstream	input_file;
+	std::string		line;
+	unsigned int	rd;
+
+	rd = 0;
+	data_file.open(database);
+	if (data_file.is_open())
+	{
+		while (getline(data_file, line))
+		{
+			rd = rd + line.size();
+		}
+		if (rd == 0)
+		{
+			std::cerr << "Error: empty Databse file." << std::endl;
+			data_file.close();
+			return (1);
+		}
+		data_file.close();
+	}
+	line.assign("");
+	rd = 0;
+	input_file.open(input);
+	if (input_file.is_open())
+	{
+		while (getline(input_file, line))
+		{
+			rd = rd + line.size();
+		}
+		if (rd == 0)
+		{
+			std::cerr << "Error: empty input file." << std::endl;
+			input_file.close();
+			return (1);
+		}
+		input_file.close();
+	}
+	return (0);
 }
 
 int		BitcoinExchange::GetDatabase(std::ifstream& file)

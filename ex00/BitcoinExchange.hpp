@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:40:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 18:29:02 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:06:36 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class BitcoinExchange
 		~BitcoinExchange();
 
 		const std::map<std::string, float>	GetData(void) const ;
+		int									IsEmptyFiles(char *database, char *input);
 		int									GetDatabase(std::ifstream& file);
 		void								Display(std::ifstream& file);
 };

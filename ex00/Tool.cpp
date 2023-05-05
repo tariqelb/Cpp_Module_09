@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:44:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:32:33 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/05 11:41:18 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ int	ValidDate(std::string date)
 
 int ValidFloatNumber(std::string nbr, std::string line)
 {
-	int i;
-	int size;
-	int decimal;
-	int notadigit;
+	int 	i;
+	int 	size;
+	int 	decimal;
+	int 	notadigit;
 
 	i = 0;
 	decimal = 0;
@@ -107,11 +107,8 @@ int ValidFloatNumber(std::string nbr, std::string line)
 		std::cerr << "Error: bad input => " << line << std::endl;
 		return (0);
 	}
-	if (nbr[i] == '-')
-	{
-		std::cerr << "Error: not a positve number." << std::endl;
-		return (0);
-	}
+	if (nbr[i] == '-' || nbr[i] == '+')
+		i++;
 	while (i < size)
 	{
 		if (nbr[i] == '.')
@@ -131,11 +128,6 @@ int ValidFloatNumber(std::string nbr, std::string line)
 	i = 0;
 	while (i < size && nbr[i] != '.')
 		i++;
-	if (i > 3)
-	{
-		std::cerr << "Error: too large a number." << std::endl;
-		return (0);
-	}
 	return (1);
 }
 
@@ -145,6 +137,7 @@ int	ValidValue(std::string value, std::string line)
 	float	val;
 
 	i = 0;
+	val = 0;
 	if (ValidFloatNumber(value, line))
 	{
 		try
@@ -153,12 +146,17 @@ int	ValidValue(std::string value, std::string line)
 		}
 		catch (const std::invalid_argument& ex)
 		{
-			std::cerr << "Error: bad input 1=> " << line << std::endl;
+			std::cerr << "Error: bad input => " << line << std::endl;
 			return (0);
 		}
 		catch (const std::out_of_range& ex)
 		{
-			std::cerr << "Error: bad input 2=> " << line << std::endl;
+			std::cerr << "Error: bad input => " << line << std::endl;
+			return (0);
+		}
+		if (val < 0 || val > 1000)
+		{
+			std::cerr << "Error: too large a number." << std::endl;
 			return (0);
 		}
 		return (1);
