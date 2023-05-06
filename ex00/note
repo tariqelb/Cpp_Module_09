@@ -1,0 +1,8 @@
+date | vale some
+2011-01-01 1 error
+you should skip the empty line
+long long get_microseconds() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000000LL + tv.tv_usec;
+}

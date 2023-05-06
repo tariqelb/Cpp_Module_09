@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:47:19 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:20:21 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/05 20:30:56 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,56 +70,38 @@ std::stack<std::string>	Rpn::GetExpr(void) const
 	return (this->expr);
 }
 
-void	Rpn::FillExpr(char	*arg)
+void	Rpn::FillExpr(char	**arg)
 {
 	int 		i;
-	int 		j;
+	int 		index;
 	int			size;
 	std::string expr;
 	std::string	val;
-
-	if (arg == NULL)
-		return ;
-	expr = arg;
-	size = expr.size();
-	i = 0;
-	while (i < size)
+	
+	index = 1;
+	while (arg[index])
 	{
-		while (i < size && expr[i] == ' ')
-			i++;
-		j = 0;
-		while (i + j < size && arg[i + j] != ' ')
-			j++;
-		if (j)
+		expr = arg[index];
+		size = expr.size();
+		i = 0;
+		while (i < size)
 		{
-			val = expr.substr(i, j);
-			this->expr.push(val);
+			while (i < size && expr[i] == ' ')
+				i++;
+			if (i < size)
+			{
+				val = expr.substr(i, 1);
+				this->expr.push(val);
+				i++;
+			}
 		}
-		i = i + j;
+		index++;
 	}
 }
 
 int	ValidDigit(std::string nbr)
 {
-	int i;
-	int size;
-
-	size = nbr.size();
-	if (size && nbr[0] == '+' && size != 2)
-		return (1);
-	if (size && nbr[0] != '+' && nbr[0] != '-' && size != 1)
-		return (1);
-	i = 0;
-	if (nbr[0] == '-')
-		i++;
-	while (i < size)
-	{
-		if (isdigit(nbr[i]))
-			i++;
-		else
-			return (1);
-	}
-	if (i == size)
+	if (nbr.size() && nbr[0] >= '0' && nbr[0] <= '9')	
 		return (0);
 	return (1);
 }

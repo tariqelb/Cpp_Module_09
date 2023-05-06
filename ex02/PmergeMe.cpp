@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:27:09 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:32:49 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,12 +213,19 @@ void	PmergeMe::SortAndDisplayResult(void)
 		else
 			std::cout << std::endl;
 	}
-	std::cout << "Time to process a range of " << this->vec_nbr.size() << " elements with std::vector : ";
-	std::cout << (vec_time_af.tv_sec - vec_time_be.tv_sec ) << ".";
-   	std::cout << (vec_time_af.tv_usec - vec_time_be.tv_usec) << " us" << std::endl; 
-	std::cout << "Time to process a range of " << this->deq_nbr.size() << " elements with std::deque  : ";
-	std::cout << (deq_time_af.tv_sec - deq_time_be.tv_sec ) << ".";
-   	std::cout << (deq_time_af.tv_usec - deq_time_be.tv_usec) << " us" << std::endl; 
+	double spent1;
+	double spent2;
+	
+   	spent1 = ((deq_time_af.tv_sec - deq_time_be.tv_sec ) + ((deq_time_af.tv_usec - deq_time_be.tv_usec) / 1000000.0));
+	spent2 =  ((vec_time_af.tv_sec - vec_time_be.tv_sec ) + ((vec_time_af.tv_usec - vec_time_be.tv_usec) / 1000000.0)) ; 	
+	std::cout << std::fixed;
+	std::cout << "Time to process a range of " << this->vec_nbr.size();
+   	std::cout << " elements with std::vector : ";
+   	std::cout << spent2 << " us" << std::endl; 
+	std::cout << "Time to process a range of " << this->deq_nbr.size(); 
+	std::cout << " elements with std::deque  : ";
+   	std::cout << spent1 << " us" << std::endl; 
+
 }
 
 void	PmergeMe::IsVectorSorted(void)

@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:03:56 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/05 11:24:24 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/06 11:39:20 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,24 +91,44 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 	int				i;
 	int				j;
 	int				k;
+	int				index;
 	int				size;
 
 	std::getline(file, line);
 	i = line.find("date");
 	j = line.find(",");
 	k = line.find("exchange_rate");
-	if (i < 0 || j < 0 || k < 0)
+	size = line.size();
+	index = 0;
+	while (index < size && (line[index] == ' ' || line[index] == '\t'))
+		index++;
+	if (index == i)
 	{
-		std::cerr << "Invalid datebase format." << std::endl;
-		return (1);
+		index += 4;
+		while (index < size && (line[index] == ' ' || line[index] == '\t'))
+			index++;
+		if (index == j)
+		{
+			index += 1;
+			while (index < size && (line[index] == ' ' || line[index] == '\t'))
+				index++;
+			if (index == k)
+			{
+				index += 13;
+				while (index < size && (line[index] == ' ' || line[index] == '\t'))
+					index++;
+				if (index != size)
+					std::cerr << "Error: invalide Database format.4" << std::endl;
+			}
+			else
+				std::cerr << "Error: invalide Database format.3" << std::endl;
+		}
+		else
+			std::cerr << "Error: invalide Database format.2" << std::endl;
+
 	}
-	else if (i < j && j < k)
-		;
 	else
-	{
-		std::cerr << "Invalid datebase format." << std::endl;
-		return (1);
-	}
+		std::cerr << "Error: invalide Database format.1" << std::endl;
 	i = 0;
 	j = 0;
 	k = 0;
@@ -157,19 +177,46 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 
 void	CheckFormat(std::string line)
 {
-	int	date;
-	int pipe;
-	int value;
+	int	i;
+	int j;
+	int k;
+	int size;
+	int index;
 
-	date = line.find("date");
-	pipe = line.find("|");
-	value = line.find("value"); 
-	if (date < 0 || pipe < 0 || value < 0 )
-		std::cerr << "Error: Invalid input format." << std::endl;
-	else if (date < pipe && pipe < value)
-		return;
+	i = line.find("date");
+	j = line.find("|");
+	k = line.find("value"); 
+	size = line.size();
+	index = 0;
+	while (index < size && (line[index] == ' ' || line[index] == '\t'))
+		index++;
+	if (index == i)
+	{
+		index += 4;
+		while (index < size && (line[index] == ' ' || line[index] == '\t'))
+			index++;
+		if (index == j)
+		{
+			index += 1;
+			while (index < size && (line[index] == ' ' || line[index] == '\t'))
+				index++;
+			if (index == k)
+			{
+				index += 5;
+				while (index < size && (line[index] == ' ' || line[index] == '\t'))
+					index++;
+				if (index != size)
+					std::cerr << "Error: invalide inpute format." << std::endl;
+			}
+			else
+				std::cerr << "Error: invalide input format." << std::endl;
+		}
+		else
+			std::cerr << "Error: invalide input format." << std::endl;
+
+	}
 	else
-		std::cerr << "Error: Invalid input format." << std::endl;
+		std::cerr << "Error: invalide input format." << std::endl;
 }
 
 void	BitcoinExchange::Display(std::ifstream& file)
@@ -182,29 +229,32 @@ void	BitcoinExchange::Display(std::ifstream& file)
 	CheckFormat(line);
 	while (std::getline(file, line))
 	{
-		pr = CheckForErrors(line);
-		if (pr.first.size() != 0)
+		if (line.size())
 		{
-			it  = data.find(pr.first);
-			if (it == data.end())
+			pr = CheckForErrors(line);
+			if (pr.first.size() != 0)
 			{
-				it = this->data.lower_bound(pr.first);
-				if (it == this->data.begin())
+				it  = data.find(pr.first);
+				if (it == data.end())
 				{
-					std::cout << pr.first << " => " << pr.second << " = ";
-			    	std::cout << pr.second * 0 << std::endl;
+					it = this->data.lower_bound(pr.first);
+					if (it == this->data.begin())
+					{
+						std::cout << pr.first << " => " << pr.second << " = ";
+						std::cout << pr.second * 0 << std::endl;
+					}
+					else
+					{
+						it--;
+						std::cout << pr.first << " => " << pr.second << " = ";
+						std::cout << it->second * pr.second << std::endl;
+					}
 				}
 				else
 				{
-					it--;
 					std::cout << pr.first << " => " << pr.second << " = ";
 					std::cout << it->second * pr.second << std::endl;
 				}
-			}
-			else
-			{
-				std::cout << pr.first << " => " << pr.second << " = ";
-			    std::cout << it->second * pr.second << std::endl;
 			}
 		}
 	}	

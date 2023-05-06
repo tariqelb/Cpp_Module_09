@@ -6,113 +6,148 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 19:55:32 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:29:57 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:33:58 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-void	VectorInsertionSort(std::vector<unsigned int>& vec)
+void	VecInsertion(std::vector<std::vector<unsigned int> >& merge, std::vector<unsigned int> left, std::vector<unsigned int> right)
+{
+	std::vector<unsigned int>	insert;
+	int							r_size;
+	int							l_size;
+	int							i;
+	int							j;
+
+	l_size = left.size();
+	r_size = right.size();
+	i = 0;
+	j = 0;
+	while (i < l_size && j < r_size)
+	{
+		if (left[i] <= right[j])
+		{
+			insert.push_back(left[i]);
+			i++;
+		}
+		else
+		{
+			insert.push_back(right[j]);
+			j++;
+		}
+	}
+	while (i < l_size)
+	{
+		insert.push_back(left[i]);
+		i++;
+	}
+	while (j < r_size)
+	{
+		insert.push_back(right[j]);
+		j++;
+	}
+	size_t ii = 0;
+	std::cout << "Left : ";
+	while (ii < left.size())
+	{
+		std::cout << left[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	ii = 0;
+	std::cout << "Right : ";
+	while (ii < right.size())
+	{
+		std::cout << right[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	ii = 0;
+	std::cout << "Insert : ";
+	while (ii < insert.size())
+	{
+		std::cout << insert[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	if (merge.size() >= 2)
+		merge.erase(merge.begin(), merge.begin() + 2);
+	merge.push_back(insert);
+}
+
+void	SortVeq(std::vector<unsigned int>& vec)
+{
+	int				i;
+	int 			size;
+	unsigned int	tmp;
+
+	i = 0;
+	size = vec.size();
+	while (i < size - 1)
+	{
+		if (vec[i] > vec[i + 1])
+		{
+			tmp = vec[i];
+			vec[i] = vec[i + 1];
+			vec[i + 1] = tmp;
+			i = 0;
+		}
+		else
+			i++;
+	}
+}
+
+void	VectorInsertionSort(std::vector<unsigned int>& vec, std::vector<std::vector<unsigned int> > merge)
 {
 	int				i;
 	int				j;
 	int				size;
-	unsigned int	tmp;
 
-	size = vec.size();
+	size = merge.size();
 	i = 0;
-	while (i < size - 1)
+	while (i < size)
 	{
-		j = i + 1;
-		if (vec[i] > vec[j])
-		{
-			tmp = vec[i];
-			vec[i] = vec[j];
-			vec[j] = tmp;
-			if (i > 0)
-				i--;
-		}
-		else
-			i++;
+		SortVeq(merge[i]);
+		i++;
 	}
-}
-
-std::vector<unsigned int>	MergeInsertionVec(std::vector<unsigned int> tmp1, std::vector<unsigned int> tmp2)
-{
-	int							i;
-	int							j;
-	int 						size_i;
-	int 						size_j;
-	std::vector<unsigned int>	merge;
-
-	i = 0;
-	j = 0;
-	size_i = tmp1.size();
-	size_j = tmp2.size();
-	while (i < size_i || j < size_j)
-	{
-		if (i == size_i && j < size_j)
-		{
-			while (j < size_j)
-			{
-				merge.push_back(tmp2[j]);
-				j++;
-			}
-		}
-		else if (j == size_j && i < size_i)
-		{
-			while (i < size_i)
-			{
-				merge.push_back(tmp1[i]);
-				i++;
-			}
-		}
-		else if (tmp1[i] <= tmp2[j])
-		{
-			merge.push_back(tmp1[i]);
-			i++;
-		}
-		else if (tmp1[i] > tmp2[j])
-		{
-			merge.push_back(tmp2[j]);
-			j++;
-		}
-		else
-		{
-			i++;
-			j++;
-		}
-	}
-	return (merge);
-}
-
-void	VectorMergeSort(std::vector<unsigned int>& vec, std::vector<unsigned int> *tmp, int div)
-{
-	int i;
-	int j;
-
-	while (div > 1)
+	while (size != 1)
 	{
 		i = 0;
-		j = 0;
-		while (i < div)
-		{
-			tmp[j] = MergeInsertionVec(tmp[i], tmp[i + 1]);
-			j++;
-			i = i + 2;
-		}
-		div = div / 2;
+		j = i + 1;
+		if (j < size)
+			VecInsertion(merge, merge[i], merge[j]);
+		i++;
+		size = merge.size();
 	}
-	vec = tmp[0];
+	vec.assign(merge[0].begin(), merge[0].end());
+}
+
+void	VectorMergeSort(std::vector<unsigned int>& vec, std::vector<std::vector<unsigned int> >& merge, int div)
+{
+	int size;
+	int	mid;
+	std::vector<unsigned int> 				left_chunk;
+	std::vector<unsigned int> 				right_chunk;
+
+	size = vec.size();
+	if (size > div)
+	{
+		mid = size / 2;
+		left_chunk.assign(vec.begin(), vec.begin() + mid);
+		right_chunk.assign(vec.begin() + mid, vec.end());
+		VectorMergeSort(left_chunk, merge, div);
+		VectorMergeSort(right_chunk, merge, div);
+	}
+	else
+		merge.push_back(vec);
 }
 
 void	SortVector(std::vector<unsigned int>& vec)
 {
-	int i;
-	int j;
 	int div;
 	int size;
-	int	chunks;
+	std::vector<std::vector<unsigned int> > merge;
 
 	size = vec.size();
 	if (size == 1)
@@ -120,31 +155,12 @@ void	SortVector(std::vector<unsigned int>& vec)
 	if (size < 10)
 		div = 2;
 	else if (size < 100)
-		div = 4;
-	else if (size < 500)
-		div = 8;
-	else
-		div = 16;
-	std::vector<unsigned int> tmp[div];
-	i = 0;
-	j = 0;
-	chunks = size / div;
-	if (size % div)
-		chunks += 1;
-	while (i < div)
-	{
-		while (j < size && j < (chunks * (i + 1)))
-		{
-			tmp[i].push_back(vec[j]);
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < div)
-	{
-		VectorInsertionSort(tmp[i]);
-		i++;
-	}
-	VectorMergeSort(vec, tmp, div);
+		div = 10;
+	else 
+		div = 20;
+	VectorMergeSort(vec, merge, div);
+	VectorInsertionSort(vec, merge);
 }
+
+
+

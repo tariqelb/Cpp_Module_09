@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:28:50 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:21:00 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:51:35 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class	Rpn
 		~Rpn();
 
 		std::stack<std::string>	GetExpr(void) const;
-		void					FillExpr(char *arg);
+		void					FillExpr(char **arg);
 		int						CheckForErrors(void);
 		void					DisplayResult(void);
 };

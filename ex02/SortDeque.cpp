@@ -6,113 +6,148 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 19:57:09 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/04 19:29:49 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/06 17:35:05 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-void	DequeInsertionSort(std::deque<unsigned int>& deq)
+void	DeqInsertion(std::deque<std::deque<unsigned int> >& merge, std::deque<unsigned int> left, std::deque<unsigned int> right)
+{
+	std::deque<unsigned int>	insert;
+	int							r_size;
+	int							l_size;
+	int							i;
+	int							j;
+
+	l_size = left.size();
+	r_size = right.size();
+	i = 0;
+	j = 0;
+	while (i < l_size && j < r_size)
+	{
+		if (left[i] <= right[j])
+		{
+			insert.push_back(left[i]);
+			i++;
+		}
+		else
+		{
+			insert.push_back(right[j]);
+			j++;
+		}
+	}
+	while (i < l_size)
+	{
+		insert.push_back(left[i]);
+		i++;
+	}
+	while (j < r_size)
+	{
+		insert.push_back(right[j]);
+		j++;
+	}
+	size_t ii = 0;
+	std::cout << "Left : ";
+	while (ii < left.size())
+	{
+		std::cout << left[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	ii = 0;
+	std::cout << "Right : ";
+	while (ii < right.size())
+	{
+		std::cout << right[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	ii = 0;
+	std::cout << "Insert : ";
+	while (ii < insert.size())
+	{
+		std::cout << insert[ii] << " ," ;
+		ii++;
+	}
+	std::cout << std::endl;
+	if (merge.size() >= 2)
+		merge.erase(merge.begin(), merge.begin() + 2);
+	merge.push_back(insert);
+}
+
+void	SortDeq(std::deque<unsigned int>& deq)
+{
+	int				i;
+	int 			size;
+	unsigned int	tmp;
+
+	i = 0;
+	size = deq.size();
+	while (i < size - 1)
+	{
+		if (deq[i] > deq[i + 1])
+		{
+			tmp = deq[i];
+			deq[i] = deq[i + 1];
+			deq[i + 1] = tmp;
+			i = 0;
+		}
+		else
+			i++;
+	}
+}
+
+void	DequeInsertionSort(std::deque<unsigned int>& deq, std::deque<std::deque<unsigned int> > merge)
 {
 	int				i;
 	int				j;
 	int				size;
-	unsigned int	tmp;
 
-	size = deq.size();
+	size = merge.size();
 	i = 0;
-	while (i < size - 1)
+	while (i < size)
 	{
-		j = i + 1;
-		if (deq[i] > deq[j])
-		{
-			tmp = deq[i];
-			deq[i] = deq[j];
-			deq[j] = tmp;
-			if (i > 0)
-				i--;
-		}
-		else
-			i++;
+		SortDeq(merge[i]);
+		i++;
 	}
-}
-
-std::deque<unsigned int>	MergeInsertionDeq(std::deque<unsigned int> tmp1, std::deque<unsigned int> tmp2)
-{
-	int							i;
-	int							j;
-	int 						size_i;
-	int 						size_j;
-	std::deque<unsigned int>	merge;
-
-	i = 0;
-	j = 0;
-	size_i = tmp1.size();
-	size_j = tmp2.size();
-	while (i < size_i || j < size_j)
-	{
-		if (i == size_i && j < size_j)
-		{
-			while (j < size_j)
-			{
-				merge.push_back(tmp2[j]);
-				j++;
-			}
-		}
-		else if (j == size_j && i < size_i)
-		{
-			while (i < size_i)
-			{
-				merge.push_back(tmp1[i]);
-				i++;
-			}
-		}
-		else if (tmp1[i] <= tmp2[j])
-		{
-			merge.push_back(tmp1[i]);
-			i++;
-		}
-		else if (tmp1[i] > tmp2[j])
-		{
-			merge.push_back(tmp2[j]);
-			j++;
-		}
-		else
-		{
-			i++;
-			j++;
-		}
-	}
-	return (merge);
-}
-
-void	DequeMergeSort(std::deque<unsigned int>& deq, std::deque<unsigned int> *tmp, int div)
-{
-	int i;
-	int j;
-
-	while (div > 1)
+	while (size != 1)
 	{
 		i = 0;
-		j = 0;
-		while (i < div)
-		{
-			tmp[j] = MergeInsertionDeq(tmp[i], tmp[i + 1]);
-			j++;
-			i = i + 2;
-		}
-		div = div / 2;
+		j = i + 1;
+		if (j < size)
+			DeqInsertion(merge, merge[i], merge[j]);
+		i++;
+		size = merge.size();
 	}
-	deq = tmp[0];
+	deq.assign(merge[0].begin(), merge[0].end());
+}
+
+void	DequeMergeSort(std::deque<unsigned int>& deq, std::deque<std::deque<unsigned int> >& merge, int div)
+{
+	int size;
+	int	mid;
+	std::deque<unsigned int> 	left_chunk;
+	std::deque<unsigned int> 	right_chunk;
+
+	size = deq.size();
+	if (size > div)
+	{
+		mid = size / 2;
+		left_chunk.assign(deq.begin(), deq.begin() + mid);
+		right_chunk.assign(deq.begin() + mid, deq.end());
+		DequeMergeSort(left_chunk, merge, div);
+		DequeMergeSort(right_chunk, merge, div);
+	}
+	else
+		merge.push_back(deq);
 }
 
 void	SortDeque(std::deque<unsigned int>& deq)
 {
-	int i;
-	int j;
 	int div;
 	int size;
-	int	chunks;
+	std::deque<std::deque<unsigned int> > merge;
 
 	size = deq.size();
 	if (size == 1)
@@ -120,31 +155,11 @@ void	SortDeque(std::deque<unsigned int>& deq)
 	if (size < 10)
 		div = 2;
 	else if (size < 100)
-		div = 4;
-	else if (size < 500)
-		div = 8;
+		div = 10;
 	else
-		div = 16;
-	std::deque<unsigned int> tmp[div];
-	i = 0;
-	j = 0;
-	chunks = size / div;
-	if (size % div)
-		chunks += 1;
-	while (i < div)
-	{
-		while (j < size && j < (chunks * (i + 1)))
-		{
-			tmp[i].push_back(deq[j]);
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < div)
-	{
-		DequeInsertionSort(tmp[i]);
-		i++;
-	}
-	DequeMergeSort(deq, tmp, div);
+		div = 20;
+	DequeMergeSort(deq, merge, div);
+	DequeInsertionSort(deq, merge);
 }
+
+

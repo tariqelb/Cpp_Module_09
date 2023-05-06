@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:44:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/05 11:41:18 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/06 11:38:31 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,10 @@ int	ValidValue(std::string value, std::string line)
 		}
 		if (val < 0 || val > 1000)
 		{
-			std::cerr << "Error: too large a number." << std::endl;
+			if (val > 1000)
+				std::cerr << "Error: too large a number." << std::endl;
+			if (val < 0)
+				std::cerr << "Error: not a positive number." << std::endl;
 			return (0);
 		}
 		return (1);
@@ -172,8 +175,10 @@ std::pair<std::string, float>		CheckForErrors(std::string line)
 	int								i;
 	int								j;
 	int								size;
+	float							flag;
 	std::pair<std::string, float>	pr;
 
+	flag = 0;
 	pr.first.assign("");
 	size = line.size();
 	j = 0;
@@ -192,8 +197,14 @@ std::pair<std::string, float>		CheckForErrors(std::string line)
 		return (pr);
 	}
 	i += j;
-	while (i < size && (line[i] == ' ' || line[i] == '|' || line[i] == '\t'))
+	while (i < size && (line[i] == ' ' || line[i] == '\t'))
 		i++;
+	if (i < size && line[i] != '|')
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return (pr);
+	}
+	i++;
 	j = 0;
 	while (i + j < size)
 		j++;
@@ -208,12 +219,22 @@ std::pair<std::string, float>		CheckForErrors(std::string line)
 	}
 	if (ValidValue(rate, line))
 	{
+		if (rate[0] == '+' || rate[0] == '-')
+		{
+			i = 1;
+			size = rate.size();
+			while (i < size)
+			{
+				if (rate[i] != '0' && rate[i] != '.')
+					flag = 1;
+				i++;
+			}
+			if (flag == 0)
+				rate.assign("0");
+		}
 		pr.first = date;
 		pr.second = std::stof(rate);
 		return (pr);
 	}
 	return (pr);
 }
-
-
-
