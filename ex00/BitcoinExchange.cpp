@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:03:56 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/06 11:39:20 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:26:17 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,17 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 				while (index < size && (line[index] == ' ' || line[index] == '\t'))
 					index++;
 				if (index != size)
-					std::cerr << "Error: invalide Database format.4" << std::endl;
+					std::cerr << "Error: unvalid Database format." << std::endl;
 			}
 			else
-				std::cerr << "Error: invalide Database format.3" << std::endl;
+				std::cerr << "Error: unvalid Database format." << std::endl;
 		}
 		else
-			std::cerr << "Error: invalide Database format.2" << std::endl;
+			std::cerr << "Error: unvalid Database format." << std::endl;
 
 	}
 	else
-		std::cerr << "Error: invalide Database format.1" << std::endl;
+		std::cerr << "Error: unvalid Database format." << std::endl;
 	i = 0;
 	j = 0;
 	k = 0;
@@ -155,19 +155,7 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 			j++;
 		if (j)
 			rate = line.substr(i, j);
-		nbr = 0;
-		try
-		{
-			nbr = std::stof(rate);
-		}
-        catch (const std::invalid_argument& ex)
-        {
-			nbr = -1;
-		}
-        catch (const std::out_of_range& ex)
-        {
-			nbr = -1;
-		}
+		nbr = toPositiveFloat(rate);
 		if (nbr != -1) 
 			this->data.insert(std::make_pair(date, nbr));	
 		k++;
@@ -206,17 +194,17 @@ void	CheckFormat(std::string line)
 				while (index < size && (line[index] == ' ' || line[index] == '\t'))
 					index++;
 				if (index != size)
-					std::cerr << "Error: invalide inpute format." << std::endl;
+					std::cerr << "Error: unvalid input format." << std::endl;
 			}
 			else
-				std::cerr << "Error: invalide input format." << std::endl;
+				std::cerr << "Error: unvalid input format." << std::endl;
 		}
 		else
-			std::cerr << "Error: invalide input format." << std::endl;
+			std::cerr << "Error: unvalid input format." << std::endl;
 
 	}
 	else
-		std::cerr << "Error: invalide input format." << std::endl;
+		std::cerr << "Error: unvalid input format." << std::endl;
 }
 
 void	BitcoinExchange::Display(std::ifstream& file)

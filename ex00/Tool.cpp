@@ -6,12 +6,31 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:44:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/06 11:38:31 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:48:36 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
+int	toInt(std::string nbr)
+{
+	int i;
+	int rst;
+	int size;
+	int	sign;
+
+	i = 0;
+	rst = 0;
+	sign = 1;
+	size = nbr.size();
+	while (i < size)
+	{
+		rst = rst * 10;
+		rst = rst + (nbr[i] - 48);
+		i++;
+	}
+	return (rst * sign);
+}
 
 int	ValidDate(std::string date)
 {
@@ -21,7 +40,6 @@ int	ValidDate(std::string date)
 	int year;
 	int month;
 	int	day;
-	int	val;
 
 	i = 0;
 	size = date.size();
@@ -31,14 +49,8 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i] != '-')
 		return (0);
-	try {
-		val = std::stoi((date.substr(0, i)));
-	}
-	catch (std::invalid_argument& e) {
-		return (0);
-	}
-	year = std::stoi((date.substr(0, i)).c_str());
-	if (year < 1)
+	year = toInt((date.substr(0, i)).c_str());
+	if (year < 2009)
 		return (0);
 	i++;
 	j = 0;
@@ -48,13 +60,7 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i + j] != '-')
 		return (0);
-	try {
-		val = std::stoi((date.substr(i, 2)));
-	}
-	catch (std::invalid_argument& e) {
-		return (0);
-	}
-	month = std::stoi(date.substr(i, 2));
+	month = toInt(date.substr(i, 2));
 	if (month < 1 || month > 12)
 		return (0);
 	i = i + 3;
@@ -65,13 +71,7 @@ int	ValidDate(std::string date)
 		return (0);
 	if (date[i + j] != '\0')
 		return (0);
-	try {
-		val = std::stoi((date.substr(i, 2)));
-	}
-	catch (std::invalid_argument& e) {
-		return (0);
-	}
-	day = std::stoi(date.substr(i, 2));
+	day = toInt(date.substr(i, 2));
 	if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
 	{
 		if (day < 1 || day > 31)
@@ -140,32 +140,92 @@ int	ValidValue(std::string value, std::string line)
 	val = 0;
 	if (ValidFloatNumber(value, line))
 	{
-		try
+		val = toPositiveFloat(value);
+		if (value.size() > 1 &&  value[0] == '-')
 		{
-			val = std::stof(value);
-		}
-		catch (const std::invalid_argument& ex)
-		{
-			std::cerr << "Error: bad input => " << line << std::endl;
-			return (0);
-		}
-		catch (const std::out_of_range& ex)
-		{
-			std::cerr << "Error: bad input => " << line << std::endl;
+			std::cerr << "Error: not a positive number." << std::endl;
 			return (0);
 		}
 		if (val < 0 || val > 1000)
 		{
 			if (val > 1000)
 				std::cerr << "Error: too large a number." << std::endl;
-			if (val < 0)
-				std::cerr << "Error: not a positive number." << std::endl;
+			else if (val == -1)
+				std::cerr << "Error: bad input => " << line << std::endl;
 			return (0);
 		}
 		return (1);
 	}
 	return (0);
 
+}
+
+double	toPositiveFloat(std::string	value)
+{
+	int i;
+	int size;
+	int dot;
+	double frac;
+	double rst;
+	int	frac_time;
+
+	size = value.size();
+	if (size == 0)
+		return (-1);
+	dot = 0;
+	i = 0;
+	if (value[0] == '.')
+		return (-1);
+	if (value[0] == '+')
+		value = value.substr(1, value.size() - 1);
+	size = value.size();
+	if (size == 0)
+		return (-1);
+	while (i < size)
+	{
+		if (value[i] >= '0' && value[i] <= '9')
+			i++;
+		else if (value[i] == '.')
+		{
+			dot++;
+			i++;
+		}
+		else
+		{
+			return (-1);
+		}
+	}
+	if (dot > 1)
+		return (-1);
+	dot = 0;
+	rst = 0;
+	frac = 0;
+	frac_time = 0;
+	i = 0;
+	while (i < size)
+	{
+		if (dot == 0 && value[i] != '.')
+		{
+			rst = rst * 10;
+			rst = rst + (value[i] - 48);
+		}
+		else if (dot == 1 && value[i] != '.')
+		{
+			frac = frac * 10;
+			frac = frac + (value[i] - 48);
+			frac_time++;
+		}
+		else if (value[i] == '.')
+			dot = 1;
+		i++;
+	}
+	while (frac_time)
+	{
+		frac = frac / 10;
+		frac_time--;
+	}
+	rst = rst + frac;
+	return  (rst);
 }
 
 std::pair<std::string, float>		CheckForErrors(std::string line)
@@ -205,6 +265,8 @@ std::pair<std::string, float>		CheckForErrors(std::string line)
 		return (pr);
 	}
 	i++;
+	while (i < size && (line[i] == ' ' || line[i] == '\t'))
+		i++;
 	j = 0;
 	while (i + j < size)
 		j++;
@@ -233,7 +295,7 @@ std::pair<std::string, float>		CheckForErrors(std::string line)
 				rate.assign("0");
 		}
 		pr.first = date;
-		pr.second = std::stof(rate);
+		pr.second = toPositiveFloat(rate);
 		return (pr);
 	}
 	return (pr);
