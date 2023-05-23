@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:40:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/20 15:50:11 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/23 19:14:46 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ class BitcoinExchange
 
 double								toPositiveFloat(std::string);
 std::pair<std::string, float>       CheckForErrors(std::string line);
+int 								ValidDate(std::string date);
 
 #endif

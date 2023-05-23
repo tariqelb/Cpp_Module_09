@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:03:56 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/20 16:26:17 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/23 19:46:06 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 		std::string		date;
 		std::string		rate;
 		float			nbr;
-
+		
 		i = 0;
 		size = line.size();
 		while (i < size && (line[i] == ' ' || line[i] == '\t'))
@@ -151,12 +151,12 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 		while (i < size && (line[i] == ' ' || line[i] == ',' || line[i] == '\t'))
 			i++;
 		j = 0;
-		while (i + j < size && (line[i + j] != ' ' || line[i] != '\t'))
+		while (i + j < size && (line[i + j] != ' ' && line[i] != '\t'))
 			j++;
 		if (j)
 			rate = line.substr(i, j);
 		nbr = toPositiveFloat(rate);
-		if (nbr != -1) 
+		if (nbr != -1 && ValidDate(date)) 
 			this->data.insert(std::make_pair(date, nbr));	
 		k++;
 	}

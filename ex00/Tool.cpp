@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:44:59 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/23 14:48:36 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/23 18:53:15 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,11 +171,17 @@ double	toPositiveFloat(std::string	value)
 
 	size = value.size();
 	if (size == 0)
+	{
+		std::cout << "size : " << std::endl;
 		return (-1);
+	}
 	dot = 0;
 	i = 0;
 	if (value[0] == '.')
+	{
+		std::cout << "Dot" << std::endl;
 		return (-1);
+	}
 	if (value[0] == '+')
 		value = value.substr(1, value.size() - 1);
 	size = value.size();
@@ -192,6 +198,8 @@ double	toPositiveFloat(std::string	value)
 		}
 		else
 		{
+			std::cout << "val [" << value << "]"<< std::endl;
+			std::cout << "not a number " <<  std::endl;
 			return (-1);
 		}
 	}
