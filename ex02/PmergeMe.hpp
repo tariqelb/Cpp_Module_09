@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 10:17:04 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/06 17:32:01 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:24:33 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class PmergeMe
 
 		const std::vector<unsigned int>&		GetVectorNumbers(void) const;
 		const std::deque<unsigned int>&			GetDequeNumbers(void) const;
+		int										GetSize(void) const;
 		int										FillAndCheckForErrors(int ac, char **av);
 		void									SortAndDisplayResult(void);
 		void									IsVectorSorted(void);

@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 19:57:09 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/06 17:35:05 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:28:49 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,6 @@ void	DeqInsertion(std::deque<std::deque<unsigned int> >& merge, std::deque<unsig
 		insert.push_back(right[j]);
 		j++;
 	}
-	size_t ii = 0;
-	std::cout << "Left : ";
-	while (ii < left.size())
-	{
-		std::cout << left[ii] << " ," ;
-		ii++;
-	}
-	std::cout << std::endl;
-	ii = 0;
-	std::cout << "Right : ";
-	while (ii < right.size())
-	{
-		std::cout << right[ii] << " ," ;
-		ii++;
-	}
-	std::cout << std::endl;
-	ii = 0;
-	std::cout << "Insert : ";
-	while (ii < insert.size())
-	{
-		std::cout << insert[ii] << " ," ;
-		ii++;
-	}
-	std::cout << std::endl;
 	if (merge.size() >= 2)
 		merge.erase(merge.begin(), merge.begin() + 2);
 	merge.push_back(insert);
@@ -161,5 +137,3 @@ void	SortDeque(std::deque<unsigned int>& deq)
 	DequeMergeSort(deq, merge, div);
 	DequeInsertionSort(deq, merge);
 }
-
-

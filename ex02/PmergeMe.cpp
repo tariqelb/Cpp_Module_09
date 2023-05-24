@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/06 17:32:49 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:25:41 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ const std::vector<unsigned int>&	PmergeMe::GetVectorNumbers(void) const
 const std::deque<unsigned int>&	PmergeMe::GetDequeNumbers(void) const
 {
 	return (this->deq_nbr);
+}
+
+int								PmergeMe::GetSize(void) const
+{
+	return (this->vec_nbr.size());
 }
 
 int	IsPositveNumber(std::string val)
@@ -203,19 +208,11 @@ void	PmergeMe::SortAndDisplayResult(void)
 			std::cout << std::endl;
 	}
 	i = 0;
-	std::cout << "after:  " ;
-	while (i < size)
-	{
-		std::cout << this->deq_nbr[i];
-		i++;
-		if (i < size)
-			std::cout << " ";
-		else
-			std::cout << std::endl;
-	}
 	double spent1;
 	double spent2;
 	
+	spent1 = 0;
+	spent2 = 0;
    	spent1 = ((deq_time_af.tv_sec - deq_time_be.tv_sec ) + ((deq_time_af.tv_usec - deq_time_be.tv_usec) / 1000000.0));
 	spent2 =  ((vec_time_af.tv_sec - vec_time_be.tv_sec ) + ((vec_time_af.tv_usec - vec_time_be.tv_usec) / 1000000.0)) ; 	
 	std::cout << std::fixed;

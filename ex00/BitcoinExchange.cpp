@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:03:56 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/23 19:46:06 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:54:04 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 	{
 		std::string		date;
 		std::string		rate;
+		std::string		delm;
 		float			nbr;
 		
 		i = 0;
@@ -148,15 +149,21 @@ int		BitcoinExchange::GetDatabase(std::ifstream& file)
 		if (j)
 			date = line.substr(i, j);
 		i += j;
-		while (i < size && (line[i] == ' ' || line[i] == ',' || line[i] == '\t'))
+		while (i < size && (line[i] == ' ' || line[i] == '\t'))
+			i++;
+		delm = line.substr(i , 1);
+		i += 1;
+		while (i < size && (line[i] == ' ' || line[i] == '\t'))
 			i++;
 		j = 0;
-		while (i + j < size && (line[i + j] != ' ' && line[i] != '\t'))
+		while (i + j < size)
 			j++;
+		while (j && (line[i + j - 1] == ' ' || line[i + j - 1] == '\t' ))
+			--j;
 		if (j)
 			rate = line.substr(i, j);
 		nbr = toPositiveFloat(rate);
-		if (nbr != -1 && ValidDate(date)) 
+		if (delm == "," || nbr != -1 || ValidDate(date))
 			this->data.insert(std::make_pair(date, nbr));	
 		k++;
 	}
@@ -228,20 +235,20 @@ void	BitcoinExchange::Display(std::ifstream& file)
 					it = this->data.lower_bound(pr.first);
 					if (it == this->data.begin())
 					{
-						std::cout << pr.first << " => " << pr.second << " = ";
+						std::cout << pr.first << " => " << pr.second << " = " ;
 						std::cout << pr.second * 0 << std::endl;
 					}
 					else
 					{
 						it--;
-						std::cout << pr.first << " => " << pr.second << " = ";
-						std::cout << it->second * pr.second << std::endl;
+						std::cout << pr.first << " => " <<  pr.second << " = " ;
+						std::cout  << it->second * pr.second << std::endl;
 					}
 				}
 				else
 				{
-					std::cout << pr.first << " => " << pr.second << " = ";
-					std::cout << it->second * pr.second << std::endl;
+					std::cout << pr.first << " => " <<  pr.second << " = " ;
+					std::cout   << it->second * pr.second << std::endl;
 				}
 			}
 		}

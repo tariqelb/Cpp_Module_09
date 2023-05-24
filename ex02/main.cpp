@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 10:30:31 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/05 21:39:25 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:27:56 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	if (number.FillAndCheckForErrors(ac, av))
+	{
+		std::cerr << "Error" << std::endl;
+		return (1);
+	}
+	if (number.GetSize() < 2)
 	{
 		std::cerr << "Error" << std::endl;
 		return (1);

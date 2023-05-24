@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:47:19 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/05 20:30:56 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:13:45 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,6 @@ void	Operation(std::stack<int>& stack, std::string opr)
 		}	
 		rst = nbr1 / nbr2;
 	}
-	//std::cout << "Rst :" << nbr1 << " " << nbr2 << " " << opr << " " << rst << std::endl;
 	stack.push(rst);
 }
 
