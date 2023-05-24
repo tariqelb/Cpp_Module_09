@@ -6,7 +6,7 @@
 /*   By: tel-bouh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 11:39:16 by tel-bouh          #+#    #+#             */
-/*   Updated: 2023/05/24 17:25:41 by tel-bouh         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:16:36 by tel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	PmergeMe::SortAndDisplayResult(void)
 	SortDeque(this->deq_nbr);
 	gettimeofday(&deq_time_af, NULL);
 	i = 0;
-	std::cout << "after:  " ;
+	std::cout << "After:  " ;
 	while (i < size)
 	{
 		std::cout << this->vec_nbr[i];
